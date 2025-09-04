@@ -8,6 +8,7 @@ TagManager:
   - Zombie
   - Waypoints
   - CameraAccessItem
+  - ZombieHand
   layers:
   - Default
   - TransparentFX
@@ -15,7 +16,7 @@ TagManager:
   - Target
   - Water
   - UI
-  - WeaponRender
+  - ItemRenderer
   - Obstruction
   - 
   - 
