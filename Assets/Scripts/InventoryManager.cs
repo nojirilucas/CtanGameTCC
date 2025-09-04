@@ -11,8 +11,7 @@ public class InventoryManager : MonoBehaviour
 
     private GameObject flashlightSlot = null;
 
-    [Header("Keycards & Keys")]
-    public List<int> collectedAccessCardLevels = new List<int>();
+    [Header("Keys")]
     public List<string> collectedKeyIds = new List<string>();
 
     private void Awake()
@@ -123,25 +122,5 @@ public class InventoryManager : MonoBehaviour
             }
         }
         return null;
-    }
-
-    public void PickupAccessCard(AccessCard card)
-    {
-        if (!collectedAccessCardLevels.Contains(card.accessLevel))
-        {
-            collectedAccessCardLevels.Add(card.accessLevel);
-            collectedAccessCardLevels.Sort();
-        }
-        Debug.Log($"Pegou Cartão de Acesso Nível {card.accessLevel}");
-    }
-
-    public bool HasAccessLevel(int requiredLevel)
-    {
-        if (requiredLevel <= 0)
-        {
-            return true;
-        }
-
-        return collectedAccessCardLevels.Any(playerCardLevel => playerCardLevel >= requiredLevel);
     }
 }

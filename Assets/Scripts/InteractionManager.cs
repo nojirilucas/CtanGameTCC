@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using cakeslice; // LÓGICA RESTAURADA
+using cakeslice;
 
 public class InteractionManager : MonoBehaviour
 {
@@ -11,7 +11,6 @@ public class InteractionManager : MonoBehaviour
     public Player player;
 
     public Item hoveredItem = null;
-    public AccessCard hoveredAccessCard = null;
     public ClosetController hoveredCloset = null;
     public Key hoveredKey = null;
     public DrawerController hoveredDrawer = null;
@@ -93,19 +92,11 @@ public class InteractionManager : MonoBehaviour
         {
             ToggleOutline(obj, true);
         }
-        else if ((hoveredAccessCard = obj.GetComponent<AccessCard>()) != null)
-        {
-            ToggleOutline(obj, true);
-        }
         else if ((hoveredItem = obj.GetComponent<Item>()) != null && !hoveredItem.isActiveItem)
         {
             ToggleOutline(obj, true);
         }
         else if ((hoveredFluxogramaTrigger = obj.GetComponent<FluxogramaTrigger>()) != null)
-        {
-            ToggleOutline(obj, true);
-        }
-        else if (obj.CompareTag("CameraAccessItem"))
         {
             ToggleOutline(obj, true);
         }
@@ -121,8 +112,6 @@ public class InteractionManager : MonoBehaviour
                 return;
             }
 
-            GameObject interactedObject = lastHoveredObject;
-
             if (hoveredCloset != null && hoveredCloset.IsInteractable)
             {
                 player.Hide(hoveredCloset);
@@ -137,12 +126,6 @@ public class InteractionManager : MonoBehaviour
             {
                 hoveredDrawer.TryOpenDrawer();
             }
-            else if (hoveredAccessCard != null)
-            {
-                InventoryManager.Instance.PickupAccessCard(hoveredAccessCard);
-                Destroy(hoveredAccessCard.gameObject);
-                ClearAllHovers();
-            }
             else if (hoveredItem != null)
             {
                 InventoryManager.Instance.PickupItem(hoveredItem.gameObject);
@@ -151,18 +134,6 @@ public class InteractionManager : MonoBehaviour
             else if (hoveredFluxogramaTrigger != null)
             {
                 hoveredFluxogramaTrigger.AbrirFluxograma(player);
-                ClearAllHovers();
-            }
-            // LÓGICA RESTAURADA
-            else if (interactedObject != null && interactedObject.CompareTag("CameraAccessItem"))
-            {
-                // Este script CameraSystemManager não foi fornecido, mas a lógica para chamá-lo está aqui.
-                // Se você tiver o script, pode descomentar.
-                // if (CameraSystemManager.Instance != null)
-                // {
-                //     CameraSystemManager.Instance.GrantCameraAccess();
-                // }
-                Destroy(interactedObject);
                 ClearAllHovers();
             }
         }
@@ -184,7 +155,6 @@ public class InteractionManager : MonoBehaviour
         }
 
         hoveredItem = null;
-        hoveredAccessCard = null;
         hoveredCloset = null;
         hoveredKey = null;
         hoveredDrawer = null;
@@ -192,11 +162,8 @@ public class InteractionManager : MonoBehaviour
         lastHoveredObject = null;
     }
 
-    // LÓGICA RESTAURADA
     private void ToggleOutline(GameObject obj, bool enabled)
     {
-        // Este script 'cakeslice.Outline' não foi fornecido, mas a lógica para chamá-lo está aqui.
-        // Se você tiver o script, pode descomentar.
         Outline[] outlinesInChildren = obj.GetComponentsInChildren<Outline>();
         foreach (Outline outline in outlinesInChildren)
         {
