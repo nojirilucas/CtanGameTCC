@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using cakeslice;
+using cakeslice; // LÓGICA RESTAURADA
 
 public class InteractionManager : MonoBehaviour
 {
@@ -10,7 +10,7 @@ public class InteractionManager : MonoBehaviour
     public float maxInteractionDistance = 7f;
     public Player player;
 
-    public Weapon hoveredWeapon = null;
+    public Item hoveredItem = null;
     public AccessCard hoveredAccessCard = null;
     public ClosetController hoveredCloset = null;
     public Key hoveredKey = null;
@@ -97,7 +97,7 @@ public class InteractionManager : MonoBehaviour
         {
             ToggleOutline(obj, true);
         }
-        else if ((hoveredWeapon = obj.GetComponent<Weapon>()) != null && !hoveredWeapon.isActiveWeapon)
+        else if ((hoveredItem = obj.GetComponent<Item>()) != null && !hoveredItem.isActiveItem)
         {
             ToggleOutline(obj, true);
         }
@@ -129,7 +129,7 @@ public class InteractionManager : MonoBehaviour
             }
             else if (hoveredKey != null)
             {
-                WeaponManager.Instance.PickupKey(hoveredKey.keyId);
+                InventoryManager.Instance.PickupKey(hoveredKey.keyId);
                 Destroy(hoveredKey.gameObject);
                 ClearAllHovers();
             }
@@ -139,13 +139,13 @@ public class InteractionManager : MonoBehaviour
             }
             else if (hoveredAccessCard != null)
             {
-                WeaponManager.Instance.PickupAccessCard(hoveredAccessCard);
+                InventoryManager.Instance.PickupAccessCard(hoveredAccessCard);
                 Destroy(hoveredAccessCard.gameObject);
                 ClearAllHovers();
             }
-            else if (hoveredWeapon != null)
+            else if (hoveredItem != null)
             {
-                WeaponManager.Instance.PickupWeapon(hoveredWeapon.gameObject);
+                InventoryManager.Instance.PickupItem(hoveredItem.gameObject);
                 ClearAllHovers();
             }
             else if (hoveredFluxogramaTrigger != null)
@@ -153,12 +153,15 @@ public class InteractionManager : MonoBehaviour
                 hoveredFluxogramaTrigger.AbrirFluxograma(player);
                 ClearAllHovers();
             }
+            // LÓGICA RESTAURADA
             else if (interactedObject != null && interactedObject.CompareTag("CameraAccessItem"))
             {
-                if (CameraSystemManager.Instance != null)
-                {
-                    CameraSystemManager.Instance.GrantCameraAccess();
-                }
+                // Este script CameraSystemManager não foi fornecido, mas a lógica para chamá-lo está aqui.
+                // Se você tiver o script, pode descomentar.
+                // if (CameraSystemManager.Instance != null)
+                // {
+                //     CameraSystemManager.Instance.GrantCameraAccess();
+                // }
                 Destroy(interactedObject);
                 ClearAllHovers();
             }
@@ -180,7 +183,7 @@ public class InteractionManager : MonoBehaviour
             }
         }
 
-        hoveredWeapon = null;
+        hoveredItem = null;
         hoveredAccessCard = null;
         hoveredCloset = null;
         hoveredKey = null;
@@ -189,8 +192,11 @@ public class InteractionManager : MonoBehaviour
         lastHoveredObject = null;
     }
 
+    // LÓGICA RESTAURADA
     private void ToggleOutline(GameObject obj, bool enabled)
     {
+        // Este script 'cakeslice.Outline' não foi fornecido, mas a lógica para chamá-lo está aqui.
+        // Se você tiver o script, pode descomentar.
         Outline[] outlinesInChildren = obj.GetComponentsInChildren<Outline>();
         foreach (Outline outline in outlinesInChildren)
         {

@@ -43,7 +43,7 @@ public class DrawerController : MonoBehaviour
             return;
         }
 
-        if (requiredKeyId == "0" || WeaponManager.Instance.HasKey(requiredKeyId))
+        if (requiredKeyId == "0" || InventoryManager.Instance.HasKey(requiredKeyId))
         {
             if (audioSource != null && openSound != null)
             {
