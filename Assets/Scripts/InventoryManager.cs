@@ -9,7 +9,6 @@ public class InventoryManager : MonoBehaviour
     public List<GameObject> itemSlots;
     public GameObject activeItemSlot;
 
-    private GameObject flashlightSlot = null;
 
     [Header("Keys")]
     public List<string> collectedKeyIds = new List<string>();
@@ -35,14 +34,7 @@ public class InventoryManager : MonoBehaviour
     {
         foreach (GameObject itemSlot in itemSlots)
         {
-            if (itemSlot == activeItemSlot || itemSlot == flashlightSlot)
-            {
-                itemSlot.SetActive(true);
-            }
-            else
-            {
-                itemSlot.SetActive(false);
-            }
+            itemSlot.SetActive(itemSlot == activeItemSlot);
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha1)) SwitchActiveSlot(0);
@@ -70,20 +62,12 @@ public class InventoryManager : MonoBehaviour
 
         pickedupItem.GetComponent<Collider>().enabled = false;
 
-        if (item.thisItemType == Item.ItemType.Flashlight)
-        {
-            flashlightSlot = itemSlots[emptySlotIndex.Value];
-            item.isActiveItem = true;
-        }
-        else
-        {
-            SwitchActiveSlot(emptySlotIndex.Value);
-        }
+        SwitchActiveSlot(emptySlotIndex.Value);
     }
 
     public void SwitchActiveSlot(int slotNumber)
     {
-        if (activeItemSlot != null && activeItemSlot.transform.childCount > 0 && activeItemSlot != flashlightSlot)
+        if (activeItemSlot != null && activeItemSlot.transform.childCount > 0)
         {
             Item currentItem = activeItemSlot.transform.GetChild(0).GetComponent<Item>();
             currentItem.isActiveItem = false;
@@ -91,7 +75,7 @@ public class InventoryManager : MonoBehaviour
 
         activeItemSlot = itemSlots[slotNumber];
 
-        if (activeItemSlot != null && activeItemSlot.transform.childCount > 0 && activeItemSlot != flashlightSlot)
+        if (activeItemSlot != null && activeItemSlot.transform.childCount > 0)
         {
             Item newItem = activeItemSlot.transform.GetChild(0).GetComponent<Item>();
             newItem.isActiveItem = true;

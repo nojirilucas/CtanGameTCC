@@ -6,6 +6,7 @@ using cakeslice;
 public class InteractionManager : MonoBehaviour
 {
     public static InteractionManager Instance { get; set; }
+    public InventoryManager inventoryManager;
 
     public float maxInteractionDistance = 7f;
     public Player player;
@@ -135,6 +136,32 @@ public class InteractionManager : MonoBehaviour
             {
                 hoveredFluxogramaTrigger.AbrirFluxograma(player);
                 ClearAllHovers();
+            }
+        }
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            // Primeiro, verifica se o livro já está aberto
+            if (BookViewController.Instance.isBookOpen)
+            {
+                // Se estiver aberto, simplesmente o fecha
+                BookViewController.Instance.CloseBook();
+            }
+            else // Se não estiver aberto, executa a lógica para tentar abrir
+            {
+                // Pega o item que está no slot ativo do inventário
+                if (inventoryManager.activeItemSlot != null && inventoryManager.activeItemSlot.transform.childCount > 0)
+                {
+                    GameObject activeItemObject = inventoryManager.activeItemSlot.transform.GetChild(0).gameObject;
+
+                    // Verifica se este item tem os dados de um livro
+                    BookData bookData = activeItemObject.GetComponent<BookData>();
+                    if (bookData != null)
+                    {
+                        // Se for um livro, chama o controlador para abri-lo
+                        BookViewController.Instance.OpenBook(bookData);
+                    }
+                }
             }
         }
     }
